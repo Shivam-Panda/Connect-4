@@ -13,10 +13,21 @@ class Board {
     bar_5 = [];
     bar_6 = [];
 
+    cur_game = []
+
     count = 0
     turn = true;
 
     constructor() {
+        this.cur_game = [
+            [null, null, null, null, null, null],
+            [null, null, null, null, null, null],
+            [null, null, null, null, null, null],
+            [null, null, null, null, null, null],
+            [null, null, null, null, null, null],
+            [null, null, null, null, null, null]
+        ]
+        
         this.count = 0;
         this.turn = true;
 
@@ -70,6 +81,11 @@ class Board {
             y = 300;
         }
 
+        // Work More On This
+        if(this.count % 8 == 0) {
+            console.log(this.checkAll());
+        }
+
         for(let i = 0; i < this.bar_1.length;i++) {
             this.bar_1[i].draw();
         }
@@ -121,57 +137,88 @@ class Board {
         }
         if(mouseY >= 250 && mouseY <= 650) { 
             let x = 150;
+            let y = 0;
             if(mouseX >= 100 && mouseX <= 200) {
                 if(this.bar_1.length < 6) {
-                let len = this.bar_1.length;
-                let y = 800 - 100 * (len);
-                let p = new Piece(x, y, this.turn);
-                this.bar_1.push(p);
+                    let len = this.bar_1.length;
+                    y = 800 - 100 * (len);
+                    let p = new Piece(x, y, this.turn);
+                    this.bar_1.push(p);
+                    if(this.turn) {
+                        this.cur_game[5 - len][0] = 1
+                    } else {
+                        this.cur_game[5 - len][0] = 0
+                    }
                 }
             } else if(mouseX >= 225 && mouseX <= 325) {
                 // Bar 2
                 if(this.bar_2.length < 6) {
-                let len = this.bar_2.length;
-                x = 150 + 125;
-                let y = 800 - 100 * (len);
-                let p = new Piece(x, y, this.turn);
-                this.bar_2.push(p);
+                    let len = this.bar_2.length;
+                    x = 150 + 125;
+                    y = 800 - 100 * (len);
+                    let p = new Piece(x, y, this.turn);
+                    this.bar_2.push(p);
+                    if(this.turn) {
+                        this.cur_game[5 - len][1] = 1
+                    } else {
+                        this.cur_game[5 - len][2] = 0
+                    }
                 }
             } else if(mouseX >= 350 && mouseX <= 450) {
                 // Bar 3
                 if(this.bar_3.length < 6) {
-                let len = this.bar_3.length;
-                x = 150 + (125 * 2);
-                let y = 800 - 100 * (len);
-                let p = new Piece(x, y, this.turn);
-                this.bar_3.push(p);
+                    let len = this.bar_3.length;
+                    x = 150 + (125 * 2);
+                    y = 800 - 100 * (len);
+                    let p = new Piece(x, y, this.turn);
+                    this.bar_3.push(p);
+                    if(this.turn) {
+                        this.cur_game[5 - len][2] = 1
+                    } else {
+                        this.cur_game[5 - len][2] = 0
+                    }
                 }
             } else if(mouseX >= 475 && mouseX <= 575) {
                 // Bar 4
                 if(this.bar_4.length < 6) {
-                let len = this.bar_4.length;
-                x = 150 + (125 * 3);
-                let y = 800 - 100 * (len);
-                let p = new Piece(x, y, this.turn);
-                this.bar_4.push(p);
+                    let len = this.bar_4.length;
+                    x = 150 + (125 * 3);
+                    y = 800 - 100 * (len);
+                    let p = new Piece(x, y, this.turn);
+                    this.bar_4.push(p);
+                    if(this.turn) {
+                        this.cur_game[5 - len][3] = 1
+                    } else {
+                        this.cur_game[5 - len][3] = 0
+                    }
                 }
             } else if(mouseX >= 600 && mouseX <= 700) {
                 // Bar 5
                 if(this.bar_5.length < 6) {
-                let len = this.bar_5.length;
-                x = 150 + (125 * 4);
-                let y = 800 - 100 * (len);
-                let p = new Piece(x, y, this.turn);
-                this.bar_5.push(p);
+                    let len = this.bar_5.length;
+                    x = 150 + (125 * 4);
+                    y = 800 - 100 * (len);
+                    let p = new Piece(x, y, this.turn);
+                    this.bar_5.push(p);
+                    if(this.turn) {
+                        this.cur_game[5 - len][4] = 1
+                    } else {
+                        this.cur_game[5 - len][4] = 0
+                    }
                 }
             } else if(mouseX >= 725 && mouseX <= 825) {
                 // Bar 6
                 if(this.bar_6.length < 6) {
-                let len = this.bar_6.length;
-                x = 150 + (125 * 5);
-                let y = 800 - 100 * (len);
-                let p = new Piece(x, y, this.turn);
-                this.bar_6.push(p);
+                    let len = this.bar_6.length;
+                    x = 150 + (125 * 5);
+                    y = 800 - 100 * (len);
+                    let p = new Piece(x, y, this.turn);
+                    this.bar_6.push(p);
+                    if(this.turn) {
+                        this.cur_game[5 - len][5] = 1
+                    } else {
+                        this.cur_game[5 - len][5] = 0
+                    }
                 }
             }
         }
@@ -185,5 +232,89 @@ class Board {
         this.colors_4 = [255, 0, 0]
         this.colors_5 = [255, 0, 0]
         this.colors_6 = [255, 0, 0]
+    }
+
+    getSs(arr) {
+        let arrs = []
+        for(let i = 0; i < 6; i++) {
+            let a = []
+            for(let j = 0; j < 6; j++) {
+                a.push(this.cur_game[i][j]);
+            }
+            arrs.push(a);
+        }
+        return arrs
+    }
+
+    getStraights() {
+        let straights = this.getSs(this.cur_game);
+        let arrs = [];
+        for(let i = 0; i < straights.length; i++) {
+            for(let j = 0; j < 3; j++) {
+                let arr = []
+                for(let k = j; k < straights[i].length; k++) {
+                    arr.push(straights[i][k])
+                }
+                arrs.push(arr);
+            }
+        }
+        return arrs;
+    }
+
+    getHorizontals() {
+        let arrs = [];
+        for(let i = 0; i < this.cur_game.length; i++) {
+            for(let j = 0; j < 3; j++) {
+                let arr = []
+                for(let k = j; k < this.cur_game[i].length; k++) {
+                    arr.push(this.cur_game[i][k])
+                }
+                arrs.push(arr);
+            }
+        }
+        return arrs;
+    }
+
+    getDiagonals() {
+
+    }
+
+    checkWin(arr) {
+        let first = arr[0]
+        let checks = false;
+        for(let i = 1; i < arr.length; i++) {
+            if(arr[i] == first) {
+                checks = true;
+            } else {
+                checks = false;
+            }
+        }
+        if(checks) {
+            return first;
+        } else {
+            return null;
+        }
+    }
+
+    checkAll() {
+        let s = this.getStraights();
+        let h = this.getHorizontals();
+        // let d = this.getDiagonals();
+
+        for(let i = 0; i < s.length; i++) {
+            if(this.checkWin(s[i])) {
+                return this.checkWin(s[i]);
+            }
+        }        
+        for(let i = 0; i < h.length; i++) {
+            if(this.checkWin(h[i])) {
+                return this.checkWin(s[i]);
+            }
+        }
+        // for(let i = 0; i < d.length; i++) {
+        //     if(this.checkWin(d[i])) {
+        //         return this.checkWin(s[i]);
+        //     }
+        // };
     }
 }
