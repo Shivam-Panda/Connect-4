@@ -8,5 +8,9 @@ function setup() {
 function draw() {
     background(0, 0, 0);
     
-    b.setup();
+    b.draw();
+}
+
+function mouseClicked() {
+    b.mouseClicked();
 }
