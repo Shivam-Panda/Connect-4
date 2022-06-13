@@ -14,3 +14,7 @@ function draw() {
 function mouseClicked() {
     b.mouseClicked();
 }
+
+const restart = () => {
+    window.location.reload();
+}

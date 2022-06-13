@@ -81,11 +81,6 @@ class Board {
             y = 300;
         }
 
-        // Work More On This
-        if(this.count % 8 == 0) {
-            console.log(this.checkAll());
-        }
-
         for(let i = 0; i < this.bar_1.length;i++) {
             this.bar_1[i].draw();
         }
@@ -161,7 +156,7 @@ class Board {
                     if(this.turn) {
                         this.cur_game[5 - len][1] = 1
                     } else {
-                        this.cur_game[5 - len][2] = 0
+                        this.cur_game[5 - len][1] = 0
                     }
                 }
             } else if(mouseX >= 350 && mouseX <= 450) {
@@ -221,8 +216,12 @@ class Board {
                     }
                 }
             }
+            this.count++;
         }
-        this.count++;
+        let s = this.checkAll();
+        if(s != null) {
+            alert(`Player ${s + 1} won!`)
+        }
     }
 
     resetColors() {
@@ -239,7 +238,7 @@ class Board {
         for(let i = 0; i < 6; i++) {
             let a = []
             for(let j = 0; j < 6; j++) {
-                a.push(this.cur_game[i][j]);
+                a.push(this.cur_game[j][i]);
             }
             arrs.push(a);
         }
@@ -252,7 +251,7 @@ class Board {
         for(let i = 0; i < straights.length; i++) {
             for(let j = 0; j < 3; j++) {
                 let arr = []
-                for(let k = j; k < straights[i].length; k++) {
+                for(let k = j; k < j + 4; k++) {
                     arr.push(straights[i][k])
                 }
                 arrs.push(arr);
@@ -266,7 +265,7 @@ class Board {
         for(let i = 0; i < this.cur_game.length; i++) {
             for(let j = 0; j < 3; j++) {
                 let arr = []
-                for(let k = j; k < this.cur_game[i].length; k++) {
+                for(let k = j; k < j + 4; k++) {
                     arr.push(this.cur_game[i][k])
                 }
                 arrs.push(arr);
@@ -299,18 +298,29 @@ class Board {
     checkAll() {
         let s = this.getStraights();
         let h = this.getHorizontals();
+
+        // console.log(s)
+        // console.log(h);
         // let d = this.getDiagonals();
 
         for(let i = 0; i < s.length; i++) {
-            if(this.checkWin(s[i])) {
-                return this.checkWin(s[i]);
+            if(s[i][0] != null) {
+                let r = this.checkWin(s[i]);
+                if(r != null) {
+                    return r;
+                }
             }
         }        
         for(let i = 0; i < h.length; i++) {
-            if(this.checkWin(h[i])) {
-                return this.checkWin(s[i]);
+            if(h[i][0] != null) {
+                let r = this.checkWin(h[i]);
+                if(r != null) {
+                    return r;
+                }
             }
         }
+
+        return null;
         // for(let i = 0; i < d.length; i++) {
         //     if(this.checkWin(d[i])) {
         //         return this.checkWin(s[i]);
