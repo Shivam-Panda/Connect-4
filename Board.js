@@ -232,6 +232,20 @@ class Board {
         this.colors_5 = [255, 0, 0]
         this.colors_6 = [255, 0, 0]
     }
+    
+    getDiagonals() { 
+        let sols = [];
+        for(let k = 0; k < 3; k++) {
+            for(let i = 0; i < 3; i++) {
+                let cur = [];
+                for(let j = 0; j < 4; j++) {
+                    cur.push(this.cur_game[j + k][j+i]); 
+                }
+                sols.push(cur);
+            }
+        }
+        return sols;
+    }
 
     getSs(arr) {
         let arrs = []
@@ -298,33 +312,38 @@ class Board {
     checkAll() {
         let s = this.getStraights();
         let h = this.getHorizontals();
-
-        // console.log(s)
-        // console.log(h);
-        // let d = this.getDiagonals();
+        let d = this.getDiagonals();
 
         for(let i = 0; i < s.length; i++) {
             if(s[i][0] != null) {
                 let r = this.checkWin(s[i]);
                 if(r != null) {
+                    console.log(s[i]);
                     return r;
                 }
             }
-        }        
+        }
+
         for(let i = 0; i < h.length; i++) {
             if(h[i][0] != null) {
                 let r = this.checkWin(h[i]);
+                console.log(h[i]);
                 if(r != null) {
                     return r;
                 }
             }
         }
 
+        for(let i = 0; i < d.length; i++) {
+            if(d[i][0] != null) {
+                let r = this.checkWin(d[i]);
+                console.log(d[i]);
+                if(r != null) {
+                    return r;
+                }
+            }
+        };
+
         return null;
-        // for(let i = 0; i < d.length; i++) {
-        //     if(this.checkWin(d[i])) {
-        //         return this.checkWin(s[i]);
-        //     }
-        // };
     }
 }
