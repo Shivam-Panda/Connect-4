@@ -299,14 +299,10 @@ class Board {
             if(arr[i] == first) {
                 checks = true;
             } else {
-                checks = false;
+                return null;
             }
         }
-        if(checks) {
-            return first;
-        } else {
-            return null;
-        }
+        return first;
     }
 
     checkAll() {
